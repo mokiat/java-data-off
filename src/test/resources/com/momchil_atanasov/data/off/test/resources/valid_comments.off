@@ -1,0 +1,14 @@
+# Comment before anything else
+OFF # Comment after header
+# Some comment in between lines
+4 2 0
+-1.0 1.0 1.0 # Trailing comment
+-1.0 -1.0 -1.0# Comment attached to last number
+1.0 -1.0 1.0
+1.0 1.0 -1.0
+#Comment without a space to the special character
+# Some comment in between lines
+# Comment containing the # comment character
+3 0 1 2
+3 0 2 3
+# Comment after everything
