@@ -1,6 +1,8 @@
 java-data-off
 =============
 
+![](https://travis-ci.org/momchil-atanasov/java-data-off.svg?branch=master)
+
 A Java library that enables you to read Object File Format (*.OFF) files and resources.
 
 The Object File Format allows one to store 3D models into simple plain text format. Though not as popular as the alternative OBJ file format, it is still used in some applications. Files of this format generally look something like the following.
@@ -25,7 +27,7 @@ You can find more information and sample models at these links:
 
 ## Loading OFFs
 
-Using the library is meant to be easy and straightforward. All you need to do is instantiate an 
+Using the library is meant to be easy and straightforward. All you need to do is instantiate an
 ```OffLoader``` and pass it an ```InputStream``` to your OFF resource.
 
 **Example:**
@@ -33,14 +35,14 @@ Using the library is meant to be easy and straightforward. All you need to do is
 ```
 // Open a stream to your OFF resource
 final InputStream in = new FileInputStream("example.off");
-		
+
 // Create an OffLoader and parse the resource
 final IOffLoader loader = new OffLoader();
 final OffObject object = loader.load(in);
-		
+
 // Use the model representation to get some basic info
 System.out.println(MessageFormat.format(
-		"OFF object loaded with {0} vertices and {1} faces.", 
+		"OFF object loaded with {0} vertices and {1} faces.",
 		object.getVertices().size(),
 		object.getFaces().size()));
 ```
@@ -50,7 +52,7 @@ System.out.println(MessageFormat.format(
 * You are not tied to only opening OFF resources from files. By having the API rely purely on an InputStream, you could as well open OFFs from Java resources or the Internet.
 * Though not shown in the example (in order to keep things simple), you should still wrap your I/O code in a try finally block and close the stream on completion.
 
-The idea behind the library's API is that you end up with an ```OffObject``` Java model representation of the resource that is parsed. By navigating through the model you could easily reconstruct the 3D model. Additionally, the Java model is mutable, so you are able to make corrections to the 3D object. 
+The idea behind the library's API is that you end up with an ```OffObject``` Java model representation of the resource that is parsed. By navigating through the model you could easily reconstruct the 3D model. Additionally, the Java model is mutable, so you are able to make corrections to the 3D object.
 
 **Example:**
 
@@ -58,14 +60,14 @@ The idea behind the library's API is that you end up with an ```OffObject``` Jav
 final InputStream in = new FileInputStream("example.off");
 final IOffLoader loader = new OffLoader();
 final OffObject object = loader.load(in);
-		
+
 System.out.println("OFF Object with faces:");
 int faceIndex = 0;
 for (OffFace face : object.getFaces()) {
 	faceIndex++;
 	System.out.println(MessageFormat.format(
 			"\tFace with vertices:", faceIndex));
-			
+
 	for (Integer reference : face.getVertexReferences()) {
 		final OffVertex vertex = object.getVertex(reference);
 		System.out.println(MessageFormat.format(
@@ -91,4 +93,3 @@ If you want to use the Maven dependency management to include the library to you
 
 * [http://maven.apache.org/plugins/maven-install-plugin/examples/custom-pom-installation.html](http://maven.apache.org/plugins/maven-install-plugin/examples/custom-pom-installation.html)
 * [http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html](http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html)
-
