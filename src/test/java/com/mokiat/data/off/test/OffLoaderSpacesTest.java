@@ -21,8 +21,8 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class OffLoaderSpacesTest extends OffLoaderBaseTest {
 
-    @Override
-    public String getResourceName() {
-        return "valid_spaces.off";
-    }
+	@Override
+	public String getResourceName() {
+		return "valid_spaces.off";
+	}
 }

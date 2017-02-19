@@ -16,7 +16,8 @@
 package com.mokiat.data.off.test;
 
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertFaceColorEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -24,16 +25,16 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class OffLoaderFaceColorFloatTest extends OffLoaderBaseTest {
 
-    @Override
-    protected String getResourceName() {
-        return "valid_face_color_float.off";
-    }
+	@Override
+	protected String getResourceName() {
+		return "valid_face_color_float.off";
+	}
 
-    @Override
-    public void testLoadFaceColor() throws Exception {
-        assertTrue(object.getFaces().get(0).getHasColor());
-        assertTrue(object.getFaces().get(1).getHasColor());
-        assertFaceColorEquals(1.0f, 0.5f, 0.0f, 0.5f, object.getFaces().get(0));
-        assertFaceColorEquals(0.0f, 0.0f, 1.0f, 1.0f, object.getFaces().get(1));
-    }
+	@Override
+	public void testLoadFaceColor() throws Exception {
+		assertThat(object.getFaces().get(0).getHasColor(), is(true));
+		assertThat(object.getFaces().get(1).getHasColor(), is(true));
+		assertFaceColorEquals(1.0f, 0.5f, 0.0f, 0.5f, object.getFaces().get(0));
+		assertFaceColorEquals(0.0f, 0.0f, 1.0f, 1.0f, object.getFaces().get(1));
+	}
 }

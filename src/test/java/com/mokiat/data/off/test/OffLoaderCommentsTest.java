@@ -21,8 +21,8 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class OffLoaderCommentsTest extends OffLoaderBaseTest {
 
-    @Override
-    protected String getResourceName() {
-        return "valid_comments.off";
-    }
+	@Override
+	protected String getResourceName() {
+		return "valid_comments.off";
+	}
 }

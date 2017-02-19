@@ -19,8 +19,9 @@ import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertFaceColorEqu
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertFaceVerticesEquals;
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertVertexCoordEquals;
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.loadResource;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,47 +33,47 @@ import com.mokiat.data.off.OffObject;
 @RunWith(JUnit4.class)
 public class OffLoaderBaseTest {
 
-    protected OffObject object;
+	protected OffObject object;
 
-    @Before
-    public void setUp() throws Exception {
-        object = loadResource(getResourceName());
-    }
+	@Before
+	public void setUp() throws Exception {
+		object = loadResource(getResourceName());
+	}
 
-    @Test
-    public void testLoadVertices() throws Exception {
-        assertEquals(4, object.getVertices().size());
-        assertVertexCoordEquals(-1.0f, 1.0f, 1.0f, object.getVertex(0));
-        assertVertexCoordEquals(-1.0f, -1.0f, -1.0f, object.getVertex(1));
-        assertVertexCoordEquals(1.0f, -1.0f, 1.0f, object.getVertex(2));
-        assertVertexCoordEquals(1.0f, 1.0f, -1.0f, object.getVertex(3));
-    }
+	@Test
+	public void testLoadVertices() throws Exception {
+		assertThat(object.getVertices(), hasSize(4));
+		assertVertexCoordEquals(-1.0f, 1.0f, 1.0f, object.getVertex(0));
+		assertVertexCoordEquals(-1.0f, -1.0f, -1.0f, object.getVertex(1));
+		assertVertexCoordEquals(1.0f, -1.0f, 1.0f, object.getVertex(2));
+		assertVertexCoordEquals(1.0f, 1.0f, -1.0f, object.getVertex(3));
+	}
 
-    @Test
-    public void testLoadFaces() throws Exception {
-        assertEquals(2, object.getFaces().size());
-        assertFaceVerticesEquals(0, 1, 2, object.getFaces().get(0));
-        assertFaceVerticesEquals(0, 2, 3, object.getFaces().get(1));
-    }
+	@Test
+	public void testLoadFaces() throws Exception {
+		assertThat(object.getFaces(), hasSize(2));
+		assertFaceVerticesEquals(0, 1, 2, object.getFaces().get(0));
+		assertFaceVerticesEquals(0, 2, 3, object.getFaces().get(1));
+	}
 
-    @Test
-    public void testLoadVertexColor() throws Exception {
-        assertFalse(object.getHasVertexColors());
-    }
+	@Test
+	public void testLoadVertexColor() throws Exception {
+		assertThat(object.getHasVertexColors(), is(false));
+	}
 
-    @Test
-    public void testLoadFaceColor() throws Exception {
-        assertFalse(object.getFaces().get(0).getHasColor());
-        assertFalse(object.getFaces().get(1).getHasColor());
-        // When no face color is specified, default is gray
-        assertFaceColorEquals(0.666f, 0.666f, 0.666f, 0.666f, object.getFaces().get(0));
-        assertFaceColorEquals(0.666f, 0.666f, 0.666f, 0.666f, object.getFaces().get(1));
-    }
+	@Test
+	public void testLoadFaceColor() throws Exception {
+		assertThat(object.getFaces().get(0).getHasColor(), is(false));
+		assertThat(object.getFaces().get(1).getHasColor(), is(false));
+		// When no face color is specified, default is gray
+		assertFaceColorEquals(0.666f, 0.666f, 0.666f, 0.666f, object.getFaces().get(0));
+		assertFaceColorEquals(0.666f, 0.666f, 0.666f, 0.666f, object.getFaces().get(1));
+	}
 
-    /**
-     * Override this method to test variations of the basic OFF file.
-     */
-    protected String getResourceName() {
-        return "valid_basic.off";
-    }
+	/**
+	 * Override this method to test variations of the basic OFF file.
+	 */
+	protected String getResourceName() {
+		return "valid_basic.off";
+	}
 }

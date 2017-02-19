@@ -16,7 +16,8 @@
 package com.mokiat.data.off.test;
 
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertVertexColorEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -24,17 +25,17 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class OffLoaderVertexColorIntegerTest extends OffLoaderBaseTest {
 
-    @Override
-    protected String getResourceName() {
-        return "valid_vertex_color_integer.off";
-    }
+	@Override
+	protected String getResourceName() {
+		return "valid_vertex_color_integer.off";
+	}
 
-    @Override
-    public void testLoadVertexColor() throws Exception {
-        assertTrue(object.getHasVertexColors());
-        assertVertexColorEquals(255, 0, 0, 255, object.getVertex(0));
-        assertVertexColorEquals(0, 255, 0, 127, object.getVertex(1));
-        assertVertexColorEquals(0, 0, 255, 255, object.getVertex(2));
-        assertVertexColorEquals(255, 255, 255, 127, object.getVertex(3));
-    }
+	@Override
+	public void testLoadVertexColor() throws Exception {
+		assertThat(object.getHasVertexColors(), is(true));
+		assertVertexColorEquals(255, 0, 0, 255, object.getVertex(0));
+		assertVertexColorEquals(0, 255, 0, 127, object.getVertex(1));
+		assertVertexColorEquals(0, 0, 255, 255, object.getVertex(2));
+		assertVertexColorEquals(255, 255, 255, 127, object.getVertex(3));
+	}
 }

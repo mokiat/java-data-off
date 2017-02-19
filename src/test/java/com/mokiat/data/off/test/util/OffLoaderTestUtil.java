@@ -15,9 +15,15 @@
  */
 package com.mokiat.data.off.test.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.InputStream;
+
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 
 import com.mokiat.data.off.IOffLoader;
 import com.mokiat.data.off.OffFace;
@@ -27,63 +33,80 @@ import com.mokiat.data.off.OffVertex;
 
 public class OffLoaderTestUtil {
 
-    private static final String RESOURCE_PACKAGE = "/com/mokiat/data/off/test/resources/";
+	private static final String RESOURCE_PACKAGE = "/com/mokiat/data/off/test/resources/";
 
-    public static OffObject loadResource(String name) throws Exception {
-        final InputStream in = OffLoaderTestUtil.class.getResourceAsStream(RESOURCE_PACKAGE + name);
-        if (in == null) {
-            throw new IllegalStateException("Could not find resource '" + name + "'.");
-        }
-        final IOffLoader loader = new OffLoader();
-        try {
-            return loader.load(in);
-        } finally {
-            in.close();
-        }
-    }
+	public static OffObject loadResource(String name) throws Exception {
+		final IOffLoader loader = new OffLoader();
+		try (InputStream in = openResource(name)) {
+			return loader.load(in);
+		}
+	}
 
-    public static void assertVertexCoordEquals(float x, float y, float z, OffVertex vertex) {
-        assertEquals(x, vertex.x, 0.0001f);
-        assertEquals(y, vertex.y, 0.0001f);
-        assertEquals(z, vertex.z, 0.0001f);
-    }
+	public static void assertVertexCoordEquals(float x, float y, float z, OffVertex vertex) {
+		assertThat(vertex.x, isEqualTo(x));
+		assertThat(vertex.y, isEqualTo(y));
+		assertThat(vertex.z, isEqualTo(z));
+	}
 
-    public static void assertVertexColorEquals(float r, float g, float b, float a, OffVertex vertex) {
-        assertEquals(r, vertex.r, 0.0001f);
-        assertEquals(g, vertex.g, 0.0001f);
-        assertEquals(b, vertex.b, 0.0001f);
-        assertEquals(a, vertex.a, 0.0001f);
-    }
+	public static void assertVertexColorEquals(float r, float g, float b, float a, OffVertex vertex) {
+		assertThat(vertex.r, isEqualTo(r));
+		assertThat(vertex.g, isEqualTo(g));
+		assertThat(vertex.b, isEqualTo(b));
+		assertThat(vertex.a, isEqualTo(a));
+	}
 
-    public static void assertVertexColorEquals(int r, int g, int b, int a, OffVertex vertex) {
-        assertEquals(r / 255.0f, vertex.r, 0.0001f);
-        assertEquals(g / 255.0f, vertex.g, 0.0001f);
-        assertEquals(b / 255.0f, vertex.b, 0.0001f);
-        assertEquals(a / 255.0f, vertex.a, 0.0001f);
-    }
+	public static void assertVertexColorEquals(int r, int g, int b, int a, OffVertex vertex) {
+		assertVertexColorEquals(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f, vertex);
+	}
 
-    public static void assertFaceVerticesEquals(int v0, int v1, int v2, OffFace face) {
-        assertEquals(3, face.getVertexReferences().size());
-        assertEquals(v0, face.getVertexReferences().get(0).intValue());
-        assertEquals(v1, face.getVertexReferences().get(1).intValue());
-        assertEquals(v2, face.getVertexReferences().get(2).intValue());
-    }
+	public static void assertFaceVerticesEquals(int v0, int v1, int v2, OffFace face) {
+		assertThat(face.getVertexReferences(), hasSize(3));
+		assertThat(face.getVertexReferences().get(0).intValue(), is(v0));
+		assertThat(face.getVertexReferences().get(1).intValue(), is(v1));
+		assertThat(face.getVertexReferences().get(2).intValue(), is(v2));
+	}
 
-    public static void assertFaceColorEquals(float r, float g, float b, float a, OffFace face) {
-        assertEquals(r, face.r, 0.0001f);
-        assertEquals(g, face.g, 0.0001f);
-        assertEquals(b, face.b, 0.0001f);
-        assertEquals(a, face.a, 0.0001f);
-    }
+	public static void assertFaceColorEquals(float r, float g, float b, float a, OffFace face) {
+		assertThat(face.r, isEqualTo(r));
+		assertThat(face.g, isEqualTo(g));
+		assertThat(face.b, isEqualTo(b));
+		assertThat(face.a, isEqualTo(a));
+	}
 
-    public static void assertFaceColorEquals(int r, int g, int b, int a, OffFace face) {
-        assertEquals(r / 255.0f, face.r, 0.0001f);
-        assertEquals(g / 255.0f, face.g, 0.0001f);
-        assertEquals(b / 255.0f, face.b, 0.0001f);
-        assertEquals(a / 255.0f, face.a, 0.0001f);
-    }
+	public static void assertFaceColorEquals(int r, int g, int b, int a, OffFace face) {
+		assertFaceColorEquals(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f, face);
+	}
 
-    private OffLoaderTestUtil() {
-        // Prevent instantiation
-    }
+	public static Matcher<Float> isEqualTo(final float expectedValue) {
+		final float error = 0.0001f;
+		return new BaseMatcher<Float>() {
+
+			@Override
+			public boolean matches(Object other) {
+				if (other instanceof Float) {
+					final float otherValue = ((Float) other).floatValue();
+					return Math.abs(expectedValue - otherValue) < error;
+				} else {
+					return false;
+				}
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText(String.valueOf(expectedValue));
+			}
+		};
+	}
+
+	private static InputStream openResource(String name) {
+		final InputStream result = OffLoaderTestUtil.class.getResourceAsStream(RESOURCE_PACKAGE + name);
+		if (result == null) {
+			throw new IllegalStateException("Could not find resource '" + name + "'.");
+		}
+		return result;
+	}
+
+	private OffLoaderTestUtil() {
+		// Prevent instantiation
+	}
 }
