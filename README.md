@@ -74,16 +74,41 @@ try (InputStream in = new FileInputStream("example.off")) {
 
 
 ## Setting Up
-The library is distributed as a JAR file and is available in the Releases section of the GitHub project, together with its source code and javadoc.
+
+Even though this project relies on Maven for packaging, it has not been published to the central Maven repository. Following are a number of approaches to get the library imported in your project.
+
+### JitPack
+
+An amazing web page that allows one to import Maven projects directly from GitHub. It is ideal for publishing new and small projects like this one.
+One only needs to add the following configuration in their `pom.xml` file to get the library included.
+
+```xml
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
+
+<dependencies>
+	<dependency>
+		<groupId>com.github.mokiat</groupId>
+		<artifactId>java-data-off</artifactId>
+		<version>v2.0.0</version>
+	</dependency>
+</dependencies>
+```
+
+JitPack works with other packaging frameworks as well. Check the [official webpage](https://jitpack.io/) for more information.
+
+### Packaging
+
+If `JitPack` is not an option for your use case, then you could package the `jar` files into your project. They are available for download from the [Releases](https://github.com/mokiat/java-data-off/releases) section of the repository.
 
 
-### Classpath
-If you have a very simple Java project setup that does not depend on any dependency management framework, you could easily add the JAR to the Classpath of your Java project and it should work without any additional setup.
+### Local Maven repository
 
-### Maven
-The build framework that is used for this project is Maven but the resulting JAR library artefacts are not registered in any Maven repository at the moment.
-
-If you want to use the Maven dependency management to include the library to your project, you will need to register the JAR manually in your local Maven repository. You can read more about it at the following links. (I find the first one to do the job)
+You can use a set of commands to import the `jar` files into your local Maven repository. Following are two available approaches. (I find the first one to do the job)
 
 * [http://maven.apache.org/plugins/maven-install-plugin/examples/custom-pom-installation.html](http://maven.apache.org/plugins/maven-install-plugin/examples/custom-pom-installation.html)
 * [http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html](http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html)
