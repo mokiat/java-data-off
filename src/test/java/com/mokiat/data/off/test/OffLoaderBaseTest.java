@@ -19,9 +19,9 @@ import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertFaceColorEqu
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertFaceVerticesEquals;
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertVertexCoordEquals;
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.loadResource;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
