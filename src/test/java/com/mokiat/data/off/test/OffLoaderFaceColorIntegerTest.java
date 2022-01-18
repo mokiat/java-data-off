@@ -16,10 +16,9 @@
 package com.mokiat.data.off.test;
 
 import static com.mokiat.data.off.test.util.OffLoaderTestUtil.assertFaceColorEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -31,7 +30,6 @@ public class OffLoaderFaceColorIntegerTest extends OffLoaderBaseTest {
 		return "valid_face_color_integer.off";
 	}
 
-	@Ignore("This object actually has face color.")
 	@Override
 	public void testLoadFaceColor() throws Exception {
 		assertThat(object.getFaces().get(0).getHasColor(), is(true));
