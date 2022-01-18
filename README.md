@@ -1,7 +1,7 @@
 java-data-off
 =============
 
-[![Build Status](https://travis-ci.org/mokiat/java-data-off.svg?branch=master)](https://travis-ci.org/mokiat/java-data-off)
+![maven verify status](https://github.com/mokiat/java-data-off/actions/workflows/maven.yml/badge.svg?branch=master)
 
 A Java library that enables you to read Object File Format (*.OFF) files and resources.
 
